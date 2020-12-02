@@ -1,18 +1,9 @@
 package com.labdistibuido.escenario;
 
-public class Mapa_Obj {
-    private final int X , Y;
+import java.io.File;
 
-    public Mapa_Obj(int x, int y) {
-        X = x;
-        Y = y;
-    }
-
-    public int getX() {
-        return X;
-    }
-
-    public int getY() {
-        return Y;
+public class Mapa_Obj extends Mapa{
+    public Mapa_Obj(int x, int y, File Origen) {
+        super(x, y, Origen);
     }
 }
