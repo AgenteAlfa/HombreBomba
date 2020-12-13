@@ -3,6 +3,7 @@ package com.labdistibuido;
 import com.labdistibuido.conexion.Conexion;
 import com.labdistibuido.conexion.Jugador;
 import com.labdistibuido.escenario.Escenario;
+import com.labdistibuido.escenario.Ventana;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-
+        new Ventana().inicia();
 
 /*
         File A,B;
