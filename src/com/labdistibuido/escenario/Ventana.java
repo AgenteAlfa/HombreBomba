@@ -76,13 +76,14 @@ public class Ventana extends JFrame implements Runnable {
         long ahora = 0;
         long ultimoTiempo = System.nanoTime();
         long tiempo = 0;
-        int cuadros = 0;
-
-        long tiempoTitulo = 0;
+        int cuadros = 0;        
 
         init();
 
+        /*---- Ejemplo sonido (cargando) ----*/
+        long tiempoTitulo = 0;
         ReproducirSonido title = new ReproducirSonido(EfectosDeSonido.title);
+        /*------------------------*/
 
         while (corriendo) {
             ahora = System.nanoTime();
@@ -102,10 +103,12 @@ public class Ventana extends JFrame implements Runnable {
                 cuadros = 0;
                 tiempo = 0;
 
+                /*---- Ejemplo sonido (reproduciendo) ----*/
                 tiempoTitulo++;
                 if (tiempoTitulo == 2) {
                     title.reproducir();
                 }
+                /*----------------------------------------*/
             }        
 
         }
