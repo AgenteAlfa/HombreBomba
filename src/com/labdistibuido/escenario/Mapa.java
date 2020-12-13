@@ -125,4 +125,9 @@ public abstract class Mapa{
 
         return M;
     }
+
+    public int[][] getArray() {
+        return Arr;
+    }
+
 }
