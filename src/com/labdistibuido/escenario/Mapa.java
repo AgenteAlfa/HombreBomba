@@ -38,4 +38,9 @@ public abstract class Mapa{
 
         return Arr;
     }
+
+    public int[][] getArray() {
+        return Arr;
+    }
+
 }
