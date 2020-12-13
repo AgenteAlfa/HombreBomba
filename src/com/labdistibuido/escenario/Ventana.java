@@ -9,6 +9,7 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
 import com.labdistibuido.sonidos.EfectosDeSonido;
+import com.labdistibuido.sonidos.ReproducirSonido;
 
 public class Ventana extends JFrame implements Runnable {
     private Canvas canvas;
@@ -61,6 +62,7 @@ public class Ventana extends JFrame implements Runnable {
         g.fillRect(0, 0, Constantes.ANCHO, Constantes.ALTO);
 
         // estadoJuego.dibujar()
+        
 
         g.setColor(Color.WHITE);
         g.drawString("FPS: " + FPSPROMEDIO, 0, 10);
@@ -76,7 +78,12 @@ public class Ventana extends JFrame implements Runnable {
         long tiempo = 0;
         int cuadros = 0;
 
+        long tiempoTitulo = 0;
+
         init();
+
+        ReproducirSonido title = new ReproducirSonido(EfectosDeSonido.title);
+
         while (corriendo) {
             ahora = System.nanoTime();
             delta += (ahora - ultimoTiempo)/tiempoObjetivo;
@@ -94,6 +101,11 @@ public class Ventana extends JFrame implements Runnable {
                 FPSPROMEDIO = cuadros;
                 cuadros = 0;
                 tiempo = 0;
+
+                tiempoTitulo++;
+                if (tiempoTitulo == 2) {
+                    title.reproducir();
+                }
             }        
 
         }
