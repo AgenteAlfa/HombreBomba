@@ -1,7 +1,10 @@
 package com.labdistibuido.conexion;
 
 import com.labdistibuido.escenario.Escenario;
+import com.labdistibuido.escenario.Ventana;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -9,10 +12,14 @@ import java.nio.Buffer;
 import java.util.Scanner;
 
 public class Cliente extends Socket {
+    public boolean bomba = false;
     InputStream BIS;
     OutputStream BOS;
     ObjectInputStream OIS;
     ObjectOutputStream OOS;
+    private boolean ventana_apagada = true;
+    public HiloLector HL;
+    public HiloEscritor HE;
 
     public ObjectInputStream getOIS() {
         return OIS;
@@ -27,12 +34,11 @@ public class Cliente extends Socket {
         Escenario.Inicializar(10,10);
         OIS = new ObjectInputStream(getInputStream());
         BOS = getOutputStream();
-
     }
     public void UnirsePartida()
     {
-        HiloLector HL = new HiloLector();
-        HiloEscritor HE = new HiloEscritor();
+        HL = new HiloLector();
+        HE = new HiloEscritor();
 
         HL.start();
         HE.start();
@@ -61,16 +67,17 @@ public class Cliente extends Socket {
                 while (Encendido)
                 //while (OIS.available() > 0)
                 {
-                    //Escenario.getMov().setArr((int[][]) OIS.readObject());
+                    Escenario.getMov().setArr((int[][]) OIS.readObject());
                     Escenario.getObj().setArr((int[][]) OIS.readObject());
+
                     //System.out.println("MOV");
                     //Escenario.getMov().Imprimir();
 
 
-
+                    /*
                     System.out.println("OBJ");
                     Escenario.getObj().Imprimir();
-
+                    */
                 }
 
 
@@ -83,33 +90,32 @@ public class Cliente extends Socket {
             Encendido = false;
         }
     }
-    private class HiloEscritor extends Thread
+    private class HiloEscritor extends Thread implements KeyListener
     {
-        private boolean Encendido = true;
+
+
         @Override
-        public void run() {
-            Scanner SC = new Scanner(System.in);
-            try
-            {
-                while (Encendido)
-                {
-                    if (SC.hasNext())
-                    {
-                        char[] b = SC.next().toCharArray();
-                        System.out.println("el byte es " + b[b.length - 1]);
-                        BOS.write(b[b.length - 1]);
-                    }
-                }
+        public void keyTyped(KeyEvent e) {
 
+        }
 
-
-            } catch (IOException e) {
-                e.printStackTrace();
+        @Override
+        public void keyPressed(KeyEvent e) {
+            System.out.println("CODIGO : " + e.getKeyCode());
+            try {
+                BOS.write(e.getKeyCode());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         }
-        public void Apagar(){
-            Encendido = false;
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+
         }
+
+
     }
 
 

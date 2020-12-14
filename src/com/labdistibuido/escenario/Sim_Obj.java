@@ -10,7 +10,7 @@ public class Sim_Obj {
     public static final int JUGADOR_5 = 5;
 
     public static final int BOMBA = -1;
-    public static final int EXPLOSION = -2;
+    public static final int EXPLOSION = -10;
 
 
 }
