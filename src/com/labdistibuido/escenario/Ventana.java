@@ -1,18 +1,20 @@
 package com.labdistibuido.escenario;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import com.labdistibuido.conexion.Cliente;
 import com.labdistibuido.sonidos.EfectosDeSonido;
 import com.labdistibuido.sonidos.ReproducirSonido;
 
-public class Ventana extends JFrame implements Runnable {
-    private Canvas canvas;
+public class Ventana extends JFrame implements Runnable , KeyListener {
+    private final Canvas canvas;
     private Thread thread;
     private boolean corriendo;
 
@@ -23,19 +25,22 @@ public class Ventana extends JFrame implements Runnable {
     private double tiempoObjetivo = 1000000000/FPS;
     private double delta = 0;
     private double FPSPROMEDIO = FPS;
+    private Cliente mCliente;
 
-    public Ventana() {
+    public Ventana(Cliente C) {
         setTitle("Hombre Bomba");
         setSize(Constantes.ANCHO, Constantes.ALTO);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
-
+        mCliente = C;
+        addKeyListener(this);
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
         canvas = new Canvas();
         canvas.setPreferredSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
         canvas.setMaximumSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
         canvas.setMinimumSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
-        canvas.setFocusable(true);
 
         add(canvas);
         setVisible(true);
@@ -51,25 +56,58 @@ public class Ventana extends JFrame implements Runnable {
     }
 
     private void dibujar() {
+        
         bs = canvas.getBufferStrategy();
+
         if (bs == null) {
             canvas.createBufferStrategy(3);
             return;
         }
         g = bs.getDrawGraphics();
         /*------------ Dibujar Gráficos ------------*/
-        g.setColor(Color.BLACK);
+        g.setColor(Color.black);
         g.fillRect(0, 0, Constantes.ANCHO, Constantes.ALTO);
 
+
+        //Dibujando seudo graficos de cuadricula
+        DibujarCuadricula();
+        
         // estadoJuego.dibujar()
         
 
-        g.setColor(Color.WHITE);
-        g.drawString("FPS: " + FPSPROMEDIO, 0, 10);
+        //g.setColor(Color.WHITE);
+        //g.setFont(new Font("TimesRoman", Font.PLAIN, 5));
+        //g.drawString("FPS: " + FPSPROMEDIO, 0, 10);
+
         /*------------------------------------------*/
         g.dispose();
         bs.show();        
     }
+
+    private void DibujarCuadricula()
+    {
+        int Dx = (Constantes.ANCHO)/Escenario.X - 10;
+        int Dy = (Constantes.ALTO)/Escenario.Y - 10;
+        //System.out.println("Dim : " + Dx + " - " + Dy);
+
+        for (int i = 0 ; i  < Escenario.X ; i++ )
+            for (int j = 0; j < Escenario.Y; j++ ) {
+                g.setColor(Color.gray);
+                g.fillRect(i*Dx,j*Dy,Dx - 1 , Dy - 1);
+                String Cmov = "[" + Escenario.getMov().getPos(i,j) + "]";
+                String Cobj = "(" + Escenario.getObj().getPos(i,j)+")";
+                g.setColor(Color.black);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+                g.drawString(Cmov,i*Dx + 5,j*Dy + 15);
+
+                g.setColor(Color.blue);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+                //g.drawString(Cmov,i*Dx + 5,j*Dy + 15);
+                g.drawString(Cobj,i*Dx + 20, j*Dy + 30);
+            }
+
+    }
+
 
     @Override
     public void run() {
@@ -84,6 +122,10 @@ public class Ventana extends JFrame implements Runnable {
         long tiempoTitulo = 0;
         ReproducirSonido title = new ReproducirSonido(EfectosDeSonido.title);
         /*------------------------*/
+        
+        Graphics2D g2d = (Graphics2D)g;
+        // g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        AffineTransform at = AffineTransform.getTranslateInstance(Constantes.ANCHO - 100, Constantes.ALTO - 100);
 
         while (corriendo) {
             ahora = System.nanoTime();
@@ -91,6 +133,8 @@ public class Ventana extends JFrame implements Runnable {
             tiempo += ahora - ultimoTiempo;
             ultimoTiempo = ahora;
             
+            g2d.drawImage(EfectosDeSonido.player1, at, null);
+
             if (delta > 1) {
                 actualizar();
                 dibujar();
@@ -131,5 +175,24 @@ public class Ventana extends JFrame implements Runnable {
             e.printStackTrace();
         }
     }
-    
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        System.out.println("CODIGO : " + e.getKeyCode());
+        try {
+            mCliente.getBOS().write(e.getKeyCode());
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }
 }

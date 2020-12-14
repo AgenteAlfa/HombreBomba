@@ -5,11 +5,22 @@ import java.io.File;
 public class Escenario {
     private static Mapa_Mov Mov;
     private static Mapa_Obj Obj;
+    public static int X;
+    public static int Y;
 
-    public void Inicializar(int x ,int y,File M, File O)
+    public static void Inicializar(int x ,int y,File M, File O)
     {
         Mov = new Mapa_Mov(x,y,M);
         Obj = new Mapa_Obj(x,y,O);
+        X = x;
+        Y = y;
+    }
+    public static void Inicializar(int x ,int y)
+    {
+        X = x;
+        Y = y;
+        Mov = new Mapa_Mov(x,y);
+        Obj = new Mapa_Obj(x,y);
     }
 
     public static Mapa_Mov getMov() {
@@ -19,4 +30,5 @@ public class Escenario {
     public static Mapa_Obj getObj() {
         return Obj;
     }
+
 }
