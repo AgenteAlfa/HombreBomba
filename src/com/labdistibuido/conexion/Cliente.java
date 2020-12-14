@@ -1,5 +1,6 @@
 package com.labdistibuido.conexion;
 
+import com.labdistibuido.escenario.Constantes;
 import com.labdistibuido.escenario.Escenario;
 import com.labdistibuido.escenario.Ventana;
 
@@ -31,7 +32,7 @@ public class Cliente extends Socket {
 
     public Cliente() throws IOException {
         super(Configuracion.IP, Configuracion.PUERTO);
-        Escenario.Inicializar(10,10);
+        Escenario.Inicializar(Constantes.X,Constantes.Y);
         OIS = new ObjectInputStream(getInputStream());
         BOS = getOutputStream();
     }
@@ -90,30 +91,8 @@ public class Cliente extends Socket {
             Encendido = false;
         }
     }
-    private class HiloEscritor extends Thread implements KeyListener
+    private class HiloEscritor extends Thread
     {
-
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            System.out.println("CODIGO : " + e.getKeyCode());
-            try {
-                BOS.write(e.getKeyCode());
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-
-        }
 
 
     }

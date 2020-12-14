@@ -4,7 +4,10 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
@@ -16,6 +19,8 @@ public class Ventana extends JFrame implements Runnable , KeyListener {
     private final Canvas canvas;
     private Thread thread;
     private boolean corriendo;
+    private int numJug = 0;
+    private boolean jugando = true;
 
     private BufferStrategy bs;
     private Graphics g;
@@ -25,9 +30,11 @@ public class Ventana extends JFrame implements Runnable , KeyListener {
     private double delta = 0;
     private double FPSPROMEDIO = FPS;
     private Cliente mCliente;
+    DataSound mDS;
 
     public Ventana(Cliente C) {
         setTitle("Hombre Bomba");
+        DataImg.Inicializar();
         setSize(Constantes.ANCHO, Constantes.ALTO);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -54,6 +61,39 @@ public class Ventana extends JFrame implements Runnable , KeyListener {
         // teclado.actualizar();
     }
 
+    private void dibujarVictoria()
+    {
+
+        /*------------ Dibujar Gráficos ------------*/
+        g.setColor(Color.black);
+        g.fillRect(0, 0, Constantes.ANCHO, Constantes.ALTO);
+
+
+        g.setColor(Color.white);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 35));
+        int k = 0;
+
+        k = Escenario.getObj().Buscar(1) != null ? 1 : 0;
+        k = Escenario.getObj().Buscar(2) != null ? 2 : 0;
+        k = Escenario.getObj().Buscar(3) != null ? 3 : 0;
+        k = Escenario.getObj().Buscar(4) != null ? 4 : 0;
+        k = Escenario.getObj().Buscar(5) != null ? 5 : 0;
+
+        if(k != 0)
+
+        {
+            g.drawString("EL JUGADOR " + k  + "A GANADO!!!",2*Constantes.ALTO/5, Constantes.ANCHO*2/5);
+            //System.out.println("EL JUGADOR " + k  + "A GANADO!!!");
+        }
+        else
+        {
+
+            g.drawString("TODOS MUERTOS!!!",2*Constantes.ALTO/5, Constantes.ANCHO*2/5);
+            //System.out.println("TODOS MUERTOS!!!");
+        }
+
+    }
+
     private void dibujar() {
         bs = canvas.getBufferStrategy();
 
@@ -68,7 +108,10 @@ public class Ventana extends JFrame implements Runnable , KeyListener {
 
 
         //Dibujando seudo graficos de cuadricula
+        //if(numJug >= 2)
         DibujarCuadricula();
+        //else
+            //dibujarVictoria();
 
         // estadoJuego.dibujar()
         
@@ -84,25 +127,95 @@ public class Ventana extends JFrame implements Runnable , KeyListener {
 
     private void DibujarCuadricula()
     {
-        int Dx = (Constantes.ANCHO)/Escenario.X - 10;
-        int Dy = (Constantes.ALTO)/Escenario.Y - 10;
+        int temp = numJug;
+        numJug = 0;
+        int Dx = (Constantes.ANCHO)/(Escenario.X) - 5;
+        int Dy = (Constantes.ALTO)/(Escenario.Y) - 5;
         //System.out.println("Dim : " + Dx + " - " + Dy);
 
         for (int i = 0 ; i  < Escenario.X ; i++ )
             for (int j = 0; j < Escenario.Y; j++ ) {
                 g.setColor(Color.gray);
                 g.fillRect(i*Dx,j*Dy,Dx - 1 , Dy - 1);
-                String Cmov = "[" + Escenario.getMov().getPos(i,j) + "]";
-                String Cobj = "(" + Escenario.getObj().getPos(i,j)+")";
-                g.setColor(Color.black);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 10));
-                g.drawString(Cmov,i*Dx + 5,j*Dy + 15);
+                int Mov = Escenario.getMov().getPos(i,j);
+                int Obj = Escenario.getObj().getPos(i,j);
 
-                g.setColor(Color.blue);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
-                //g.drawString(Cmov,i*Dx + 5,j*Dy + 15);
-                g.drawString(Cobj,i*Dx + 20, j*Dy + 30);
+                g.drawImage(DataImg.Suelo,i*Dx,j*Dy,Dx,Dy,null);
+                switch (Mov)
+                {
+                    case Sim_Mov.VACIO:
+                        //g.drawImage(DataImg.Vacio,i*Dx,j*Dy,Dx,Dy,null);
+                        if (i == Escenario.X - 1)
+                            g.drawImage(DataImg.Vacio1,i*Dx,j*Dy,Dx,Dy,null);
+                        if (i == 0)
+                            g.drawImage(DataImg.Vacio3,i*Dx,j*Dy,Dx,Dy,null);
+                        if (j == 0)
+                            g.drawImage(DataImg.Vacio2,i*Dx,j*Dy,Dx,Dy,null);
+                        if (j == Escenario.Y - 1)
+                            g.drawImage(DataImg.Vacio4,i*Dx,j*Dy,Dx,Dy,null);
+
+                        break;
+                    case Sim_Mov.ARBOL:
+                        g.drawImage(DataImg.Arbol,i*Dx,j*Dy,Dx,Dy,null);
+                        break;
+                    case Sim_Mov.ROCA_DURA:
+                        g.drawImage(DataImg.RocaD,i*Dx,j*Dy,Dx,Dy,null);
+                        break;
+                    case Sim_Mov.ROCA_BLANDA:
+                        g.drawImage(DataImg.RocaB,i*Dx,j*Dy,Dx,Dy,null);
+                        break;
+                }
+                switch (Obj)
+                {
+                    case Sim_Obj.VACIO:
+                        //g.drawImage(DataImg.Suelo,i*Dx,j*Dy,Dx,Dy,null);
+                        break;
+                    case Sim_Obj.JUGADOR_1:
+                        numJug++;
+                        g.drawImage(DataImg.J1,i*Dx,j*Dy,Dx,Dy,null);
+                        break;
+                    case Sim_Obj.JUGADOR_2:
+                        numJug++;
+                        g.drawImage(DataImg.J2,i*Dx,j*Dy,Dx,Dy,null);
+                        break;
+                    case Sim_Obj.JUGADOR_3:
+                        numJug++;
+                        g.drawImage(DataImg.J3,i*Dx,j*Dy,Dx,Dy,null);
+                        break;
+                    case Sim_Obj.JUGADOR_4:
+                        numJug++;
+                        g.drawImage(DataImg.J4,i*Dx,j*Dy,Dx,Dy,null);
+                        break;
+                    case Sim_Obj.JUGADOR_5:
+                        numJug++;
+                        g.drawImage(DataImg.J5,i*Dx,j*Dy,Dx,Dy,null);
+                        break;
+                    case Sim_Obj.EXPLOSION:
+                        mDS.Explosion.reproducir();
+                        g.drawImage(DataImg.Explosion,i*Dx,j*Dy,Dx,Dy,null);
+                        break;
+                    case Sim_Obj.BOMBA:
+                        g.drawImage(DataImg.Bomba,i*Dx,j*Dy,Dx,Dy,null);
+                        Random R = new Random();
+                        if(R.nextInt(100) < 50)
+                            mDS.Bomba1.reproducir();
+                        else
+                            mDS.Bomba2.reproducir();
+                        break;
+                    default:
+                        g.drawImage(DataImg.Bomba,i*Dx,j*Dy,Dx,Dy,null);
+                        break;
+                }
+
+
             }
+
+        if (temp > numJug)
+        {
+            mDS.Dead.reproducir();
+        }
+
+
 
     }
 
@@ -118,6 +231,8 @@ public class Ventana extends JFrame implements Runnable , KeyListener {
 
         /*---- Ejemplo sonido (cargando) ----*/
         long tiempoTitulo = 0;
+
+        mDS = new DataSound();
         ReproducirSonido title = new ReproducirSonido(EfectosDeSonido.title);
         /*------------------------*/
 
@@ -142,7 +257,8 @@ public class Ventana extends JFrame implements Runnable , KeyListener {
                 /*---- Ejemplo sonido (reproduciendo) ----*/
                 tiempoTitulo++;
                 if (tiempoTitulo == 2) {
-                    title.reproducir();
+                    //title.reproducir();
+                    mDS.Inicio.reproducir();
                 }
                 /*----------------------------------------*/
             }        
@@ -180,7 +296,7 @@ public class Ventana extends JFrame implements Runnable , KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("CODIGO : " + e.getKeyCode());
+        //System.out.println("CODIGO : " + e.getKeyCode());
         try {
             mCliente.getBOS().write(e.getKeyCode());
         } catch (IOException ioException) {

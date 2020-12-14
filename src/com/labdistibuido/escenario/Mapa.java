@@ -77,10 +77,10 @@ public abstract class Mapa{
             Arr[A[0]][A[1]] = Arr[B[0]][B[1]];
             Arr[B[0]][B[1]] = temp;
 
-            System.out.println("Hubo movimiento");
+            //System.out.println("Hubo movimiento");
             return true;
         }
-        System.out.println("No hubo movimiento, hay error");
+        //System.out.println("No hubo movimiento, hay error");
             return false;
     }
 

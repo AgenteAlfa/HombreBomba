@@ -1,9 +1,6 @@
 package com.labdistibuido.conexion;
 
-import com.labdistibuido.escenario.Escenario;
-import com.labdistibuido.escenario.Mapa;
-import com.labdistibuido.escenario.Sim_Mov;
-import com.labdistibuido.escenario.Sim_Obj;
+import com.labdistibuido.escenario.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +26,7 @@ public class Server extends ServerSocket{
         A = new File("src\\data\\Movimiento");
         B = new File("src\\data\\Objetos");
         //TODO : Cargar Mapa
-        Escenario.Inicializar(10,10,A,B);
+        Escenario.Inicializar(Constantes.X,Constantes.Y,A,B);
     }
 
     public void Esperar(){
@@ -84,7 +81,7 @@ public class Server extends ServerSocket{
     }
 
     private void EnviarEstatus() throws IOException {
-        System.out.println("Enviando Estatus");
+        //System.out.println("Enviando Estatus");
         for (int i = 0; i < Clientes.size(); i++) {
 
                     Clientes.get(i).getOOS().writeObject(Escenario.getMov().getArr());
