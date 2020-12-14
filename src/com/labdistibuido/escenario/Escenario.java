@@ -17,6 +17,8 @@ public class Escenario {
     }
     public static void Inicializar(int x ,int y)
     {
+        X = x;
+        Y = y;
         Mov = new Mapa_Mov(x,y);
         Obj = new Mapa_Obj(x,y);
     }

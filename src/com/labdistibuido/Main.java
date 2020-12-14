@@ -1,18 +1,30 @@
 package com.labdistibuido;
 
-import com.labdistibuido.conexion.Conexion;
-import com.labdistibuido.conexion.Jugador;
-import com.labdistibuido.escenario.Escenario;
-import com.labdistibuido.escenario.Ventana;
+import com.labdistibuido.conexion.Server;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-        new Ventana().inicia();
+        Server S;
+        //Ventana V =new Ventana();
+        try {
+            S = new Server();
+
+            S.Esperar();
+            Scanner SC = new Scanner(System.in);
+            System.out.println("Presionar una tecla para iniciar");
+            SC.next();
+            S.Empezar();
+            //V.inicia();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
 /*
         File A,B;

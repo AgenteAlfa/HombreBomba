@@ -1,4 +1,3 @@
-import com.labdistibuido.conexion.Conexion;
 import com.labdistibuido.conexion.Server;
 
 import java.io.IOException;
