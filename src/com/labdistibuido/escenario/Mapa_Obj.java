@@ -11,7 +11,7 @@ public class Mapa_Obj extends Mapa{
         super(x,y);
     }
 
-    public boolean Jugable()
+    public boolean Victoria()
     {
         int count = 0;
         count += Contiene(Sim_Obj.JUGADOR_1)?1:0;
@@ -19,7 +19,7 @@ public class Mapa_Obj extends Mapa{
         count += Contiene(Sim_Obj.JUGADOR_3)?1:0;
         count += Contiene(Sim_Obj.JUGADOR_4)?1:0;
         count += Contiene(Sim_Obj.JUGADOR_5)?1:0;
-        return count > 1;
+        return count <= 1;
     }
 
 

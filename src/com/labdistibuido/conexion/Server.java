@@ -215,16 +215,25 @@ public class Server extends ServerSocket{
         }
 
     }
+    private void MensajeVictoria()
+    {
+        for (int i = 1; i < 6; i++) {
+            int [] p = Escenario.getObj().Buscar(i);
+            if (p != null)
+                System.out.println("EL JUGADOR " + i + " GANO!");
+        }
+
+
+    }
     
     private class Hilo_Controlador extends Thread
     {
-        private int Turno = 0;
         public boolean[] SeComunicaron = new boolean[5];
         private boolean encendido = true;
         public void Apagar()
         {
             encendido = false;
-
+            //Leedor.Apagar();
         }
 
         
@@ -246,15 +255,20 @@ public class Server extends ServerSocket{
                     EnviarEstatus();
                     //Revisar bombas
                     RevisarBombas();
+                    if (Escenario.getObj().Victoria())
+                    {
+                    }
 
                 }catch (Exception E)
                 {
                     System.out.println(E.getMessage());
                 }
-                Turno++;
             }
+
+            Apagar();
         }
     }
+
 
     private class Hilo_Leedor extends Thread
     {

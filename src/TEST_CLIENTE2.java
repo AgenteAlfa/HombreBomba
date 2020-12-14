@@ -4,7 +4,7 @@ import com.labdistibuido.escenario.Ventana;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class TEST_CLIENTE1 {
+public class TEST_CLIENTE2 {
     public static void main(String[] args) {
         Cliente C;
         try {
