@@ -103,7 +103,11 @@ public class Server extends ServerSocket{
                 int mB = Clientes.get(i).getBIS().read();
                 char ord = (char) mB;
                 //System.out.println("Se leyo de jugador " + (i + 1) + " : " + ord);
-                Accion(i + 1, ord);
+                    try{
+                        Accion(i + 1, ord);
+                    }catch (Exception E)
+                    {}
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();

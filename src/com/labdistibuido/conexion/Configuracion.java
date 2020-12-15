@@ -1,7 +1,7 @@
 package com.labdistibuido.conexion;
 
 public class Configuracion {
-    public static final String IP = "192.168.0.14";
-    public static final int PUERTO = 1235;
+    public static final String IP = "25.24.159.161";
+    public static final int PUERTO = 1234;
 
 }
