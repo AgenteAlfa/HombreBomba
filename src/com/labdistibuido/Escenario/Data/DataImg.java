@@ -12,10 +12,10 @@ public class DataImg {
     public static void Inicializar()
     {
         try {
-            Suelo = ImageIO.read(new File("src\\data\\graphics\\grass1.png"));
-            Arbol = ImageIO.read(new File("src\\data\\graphics\\tree1.png"));
+            Suelo = ImageIO.read(new File("src\\data\\graphics\\ground1.png"));
+            Arbol = ImageIO.read(new File("src\\data\\graphics\\tree2.png"));
 
-            Vacio1 = ImageIO.read(new File("src\\data\\graphics\\wallR.png"));
+            Vacio1 = ImageIO.read(new File("src\\data\\graphics\\lava1.png"));
             Vacio2 = ImageIO.read(new File("src\\data\\graphics\\wallU.png"));
             Vacio3 = ImageIO.read(new File("src\\data\\graphics\\wallL.png"));
             Vacio4 = ImageIO.read(new File("src\\data\\graphics\\wallD.png"));

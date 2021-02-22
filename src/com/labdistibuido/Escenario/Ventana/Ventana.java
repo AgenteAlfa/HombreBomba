@@ -35,7 +35,11 @@ public class Ventana extends JFrame implements Runnable , KeyListener {
     private Cliente mCliente;
     DataSound mDS;
 
-    public Ventana(Cliente C) {
+    //Numero de jugador que se va a enfocar
+    private int Njugador=0;
+
+    public Ventana(Cliente C,int njugador) {
+        Njugador=njugador;
         setTitle("Hombre Bomba");
         DataImg.Inicializar();
         setSize(Constantes.ANCHO, Constantes.ALTO);
@@ -132,31 +136,59 @@ public class Ventana extends JFrame implements Runnable , KeyListener {
     {
         int temp = numJug;
         numJug = 0;
-        int Dx = (Constantes.ANCHO)/(Escenario.X) - 5;
-        int Dy = (Constantes.ALTO)/(Escenario.Y) - 5;
+        int Dx = (Constantes.ANCHO)/(Constantes.XV); //- 5;
+        int Dy = (Constantes.ALTO)/(Constantes.YV); //- 5;
         //System.out.println("Dim : " + Dx + " - " + Dy);
 
-        for (int i = 0 ; i  < Escenario.X ; i++ )
-            for (int j = 0; j < Escenario.Y; j++ ) {
+        //while para encontrar la posición del jugador pj, se guardara en pji y pjj
+        int pj=0;
+        int pji=0,pjj=0,i=0,j=0;
+
+        while (i<Constantes.X && Escenario.getObj().getPos(i, j) != Njugador) {
+            while ( j<Constantes.Y && Escenario.getObj().getPos(i, j) != Njugador) {
+                j++;
+            }
+            if(j>=Constantes.Y){
+                j=0;
+                i++;
+            }
+        }
+
+        //Si la posición del jugador no está en el mapa, entonces se pone lejos
+        if (i<=Constantes.X && j<=Constantes.Y) {
+            pjj = j;
+            pji = i;
+        }else {
+            pjj=Constantes.Y*-1;
+            pji=Constantes.X*-1;
+        }
+
+        //XV, YV: casillas de la ventana, i y j: posición en la ventana, ii y jj: posición real en el mapa
+        int ii,jj,Mov,Obj;
+
+        for (i = 0 ; i  < Constantes.XV ; i++ )
+            for (j = 0; j < Constantes.YV; j++ ) {
                 g.setColor(Color.gray);
                 g.fillRect(i*Dx,j*Dy,Dx - 1 , Dy - 1);
-                int Mov = Escenario.getMov().getPos(i,j);
-                int Obj = Escenario.getObj().getPos(i,j);
+
+                //le damos a ii y jj sus posiciones reales en el mapa
+                ii= pji + (i-(Constantes.XV/2));
+                jj= pjj + (j-(Constantes.YV/2));
+
+                //Si se sale del mapa, rellenaremos con vacío, sino obtendremos datos del mapa
+                if (jj<0 || ii<0 || jj>=Constantes.Y || ii>=Constantes.X) {
+                    Mov=1;//1 movimiento vacio
+                    Obj=0;//0 objeto vacío
+                } else {
+                    Mov = Escenario.getMov().getPos(ii, jj);
+                    Obj = Escenario.getObj().getPos(ii, jj);
+                }
 
                 g.drawImage(DataImg.Suelo,i*Dx,j*Dy,Dx,Dy,null);
                 switch (Mov)
                 {
                     case Sim_Mov.VACIO:
-                        //g.drawImage(DataImg.Vacio,i*Dx,j*Dy,Dx,Dy,null);
-                        if (i == Escenario.X - 1)
-                            g.drawImage(DataImg.Vacio1,i*Dx,j*Dy,Dx,Dy,null);
-                        if (i == 0)
-                            g.drawImage(DataImg.Vacio3,i*Dx,j*Dy,Dx,Dy,null);
-                        if (j == 0)
-                            g.drawImage(DataImg.Vacio2,i*Dx,j*Dy,Dx,Dy,null);
-                        if (j == Escenario.Y - 1)
-                            g.drawImage(DataImg.Vacio4,i*Dx,j*Dy,Dx,Dy,null);
-
+                        g.drawImage(DataImg.Vacio1,i*Dx,j*Dy,Dx,Dy,null);
                         break;
                     case Sim_Mov.ARBOL:
                         g.drawImage(DataImg.Arbol,i*Dx,j*Dy,Dx,Dy,null);
