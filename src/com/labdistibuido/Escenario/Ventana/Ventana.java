@@ -1,19 +1,22 @@
-package com.labdistibuido.escenario;
+package com.labdistibuido.Escenario.Ventana;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
 import javax.swing.JFrame;
 
-import com.labdistibuido.conexion.Cliente;
-import com.labdistibuido.sonidos.EfectosDeSonido;
-import com.labdistibuido.sonidos.ReproducirSonido;
+import com.labdistibuido.ConexionAnterior.Cliente;
+import com.labdistibuido.Escenario.Data.DataImg;
+import com.labdistibuido.Escenario.Data.DataSound;
+import com.labdistibuido.Escenario.Mapa.Escenario;
+import com.labdistibuido.Escenario.Mapa.Sim_Mov;
+import com.labdistibuido.Escenario.Mapa.Sim_Obj;
+import com.labdistibuido.Sonidos.EfectosDeSonido;
+import com.labdistibuido.Sonidos.ReproducirSonido;
 
 public class Ventana extends JFrame implements Runnable , KeyListener {
     private final Canvas canvas;

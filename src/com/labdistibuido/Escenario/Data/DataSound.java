@@ -1,9 +1,7 @@
-package com.labdistibuido.escenario;
+package com.labdistibuido.Escenario.Data;
 
-import com.labdistibuido.sonidos.EfectosDeSonido;
-import com.labdistibuido.sonidos.ReproducirSonido;
-
-import javax.xml.crypto.Data;
+import com.labdistibuido.Sonidos.EfectosDeSonido;
+import com.labdistibuido.Sonidos.ReproducirSonido;
 
 public class DataSound {
     public ReproducirSonido Inicio,Bomba1,Bomba2,Dead,End,Explosion,Caminar1,Caminar2;

@@ -1,4 +1,4 @@
-package com.labdistibuido.escenario;
+package com.labdistibuido.Escenario.Ventana;
 
 public class Constantes {
     public static final int ANCHO = 800;

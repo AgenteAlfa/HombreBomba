@@ -1,4 +1,4 @@
-package com.labdistibuido.sonidos;
+package com.labdistibuido.Sonidos;
 
 import javax.sound.sampled.Clip;
 

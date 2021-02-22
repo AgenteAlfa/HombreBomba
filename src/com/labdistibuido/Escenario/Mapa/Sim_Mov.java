@@ -1,4 +1,4 @@
-package com.labdistibuido.escenario;
+package com.labdistibuido.Escenario.Mapa;
 
 public class Sim_Mov {
     public static final int PASABLE = 0;

@@ -1,16 +1,10 @@
-package com.labdistibuido.conexion;
+package com.labdistibuido.ConexionAnterior;
 
-import com.labdistibuido.escenario.Constantes;
-import com.labdistibuido.escenario.Escenario;
-import com.labdistibuido.escenario.Ventana;
+import com.labdistibuido.Escenario.Ventana.Constantes;
+import com.labdistibuido.Escenario.Mapa.Escenario;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.nio.Buffer;
-import java.util.Scanner;
 
 public class Cliente extends Socket {
     public boolean bomba = false;
@@ -31,7 +25,7 @@ public class Cliente extends Socket {
     }
 
     public Cliente() throws IOException {
-        super(Configuracion.IP, Configuracion.PUERTO);
+        super(ConexionConfiguracion.IP, ConexionConfiguracion.PUERTO);
         Escenario.Inicializar(Constantes.X,Constantes.Y);
         OIS = new ObjectInputStream(getInputStream());
         BOS = getOutputStream();
