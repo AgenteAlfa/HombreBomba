@@ -1,4 +1,4 @@
-package com.labdistibuido.escenario;
+package com.labdistibuido.Escenario.Data;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

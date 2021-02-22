@@ -1,4 +1,4 @@
-package com.labdistibuido.sonidos;
+package com.labdistibuido.Sonidos;
 
 import java.io.File;
 import java.io.IOException;

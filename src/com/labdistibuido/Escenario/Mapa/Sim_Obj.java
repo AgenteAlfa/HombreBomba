@@ -1,4 +1,6 @@
-package com.labdistibuido.escenario;
+package com.labdistibuido.Escenario.Mapa;
+
+import com.labdistibuido.Conexion.Configuracion;
 
 public class Sim_Obj {
 
@@ -10,7 +12,7 @@ public class Sim_Obj {
     public static final int JUGADOR_5 = 5;
 
     public static final int BOMBA = -1;
-    public static final int EXPLOSION = -10;
+    public static final int EXPLOSION = Configuracion.TIEMPO_BOMBA / Configuracion.DELTA;
 
 
 }

@@ -1,4 +1,4 @@
-package com.labdistibuido.escenario;
+package com.labdistibuido.Escenario.Mapa;
 
 import java.io.File;
 

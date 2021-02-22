@@ -1,11 +1,14 @@
-package com.labdistibuido.conexion;
+package com.labdistibuido.ConexionAnterior;
 
-import com.labdistibuido.escenario.*;
+import com.labdistibuido.Escenario.Mapa.Escenario;
+import com.labdistibuido.Escenario.Mapa.Mapa;
+import com.labdistibuido.Escenario.Mapa.Sim_Mov;
+import com.labdistibuido.Escenario.Mapa.Sim_Obj;
+import com.labdistibuido.Escenario.Ventana.Constantes;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server extends ServerSocket{
@@ -19,7 +22,7 @@ public class Server extends ServerSocket{
 
 
     public Server() throws IOException {
-        super(Configuracion.PUERTO);
+        super(ConexionConfiguracion.PUERTO);
         //Preparando Escenario
         File A,B;
         Clientes = new ArrayList<>();
@@ -243,7 +246,7 @@ public class Server extends ServerSocket{
                     SeComunicaron[2] = false;
                     SeComunicaron[3] = false;
                     SeComunicaron[4] = false;
-                    sleep(200);
+                    sleep(20);
                     EnviarEstatus();
                     //Revisar bombas
                     RevisarBombas();
